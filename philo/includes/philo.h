@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:18:03 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/08/03 12:18:08 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:24:35 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include <sys/types.h>
 # include <stdint.h>
 
 # define BLACK	"\033[1;30m"
@@ -29,6 +28,8 @@
 # define BLUE	"\033[1;36m"
 # define WHITE	"\033[1;37m"
 # define GRAY	"\033[1;90m"
+# define YELLOW	"\033[1;33m"
+# define WHITERED	"\033[1;37;41m"
 # define EOC	"\033[0;0m"
 
 typedef struct s_data
@@ -39,6 +40,7 @@ typedef struct s_data
 	int				t_sleep;
 	int				max_eat;
 	int				is_dead;
+	int				enough_eaten;
 	struct s_philo	*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
@@ -49,6 +51,7 @@ typedef struct s_data
 
 typedef struct s_philo
 {
+	pthread_mutex_t	after_food;
 	long long int	time_after_food;
 	int				times_eaten;
 	int				id;
@@ -70,7 +73,7 @@ void		ft_printf(t_data *data, char *msg, long long int arg1, int arg2);
 t_data		*ft_init_philo(int argc, char *argv[]);
 void		ft_philo_maker(t_data *data);
 uint64_t	get_time(void);
-int			ft_usleep(useconds_t time);
+int			ft_usleep(suseconds_t time);
 void		ft_finish(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:15:49 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/07/24 18:16:08 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:05:52 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strstr(char *str, char *to_find)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (str[i] != '\0')

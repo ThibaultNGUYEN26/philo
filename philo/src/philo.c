@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:16:59 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/07/24 17:38:50 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:15:17 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	main(int argc, char *argv[])
 	data = ft_init_philo(argc, argv);
 	if (!data)
 		return (EXIT_FAILURE);
-	return (0);
 	ft_philo_maker(data);
+	return (0);
 }

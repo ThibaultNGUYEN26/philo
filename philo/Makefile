@@ -6,7 +6,7 @@
 #    By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 18:44:37 by thibnguy          #+#    #+#              #
-#    Updated: 2023/07/24 18:44:39 by thibnguy         ###   ########.fr        #
+#    Updated: 2023/08/03 12:35:19 by thibnguy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS		=	libft/ft_atoi.c \
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -lpthread #-g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror #-g -fsanitize=address
 CINCLUDES	=	-I ${INCLUDES}
 
 BLACK		=	"\033[1;30m"
@@ -68,7 +68,7 @@ all: ${NAME} norminette
 
 ${NAME}: ${OBJS} ${OBJECTS}/${NAME}.o
 	@echo $(GREEN)"\n● Compilation of ${NAME}..."$(EOC)
-	@${CC} ${CFLAGS} ${CINCLUDES} -o ${NAME} ${OBJS} ${OBJECTS}/${NAME}.o
+	@${CC} ${CFLAGS} ${CINCLUDES} -o ${NAME} ${OBJS} ${OBJECTS}/${NAME}.o -lpthread
 
 norminette:
 	@norminette | grep "Error!" > /dev/null && echo $(WHITE)"● [Norminette]: "$(RED)"KO\n"$(EOC) || echo $(WHITE)"● [Norminette]: "$(GREEN)"OK\n"$(EOC)
