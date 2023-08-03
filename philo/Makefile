@@ -6,7 +6,7 @@
 #    By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 18:44:37 by thibnguy          #+#    #+#              #
-#    Updated: 2023/08/03 12:35:19 by thibnguy         ###   ########.fr        #
+#    Updated: 2023/08/03 19:06:16 by thibnguy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS		=	libft/ft_atoi.c \
 				libft/ft_strstr.c \
 				parsing/ft_parsing.c \
 				parsing/ft_printf.c \
+				philo_functions/ft_get_time.c \
 				philo_functions/ft_init_philo.c \
 				philo_functions/ft_philo_utils.c \
 

@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:22:34 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/08/03 16:54:32 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:08:50 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_data	*ft_init_philo(int argc, char *argv[])
 	return (data);
 }
 
-static int	philo_death(t_philo *philo)
+int	philo_death(t_philo *philo)
 {
 	t_data	*data;
 	int		i;
@@ -58,14 +58,9 @@ static int	philo_death(t_philo *philo)
 		pthread_mutex_unlock(&(data->death));
 		return (data->is_dead);
 	}
-	else if ((philo->times_eaten != data->max_eat) && (get_time() - philo->time_after_food) > data->t_die)
-	{
-		data->is_dead = 1;
-		ft_printf(data, "is dead", get_time() - data->start, philo->id);
-		i = -1;
-		while (++i < data->nb_philo)
-			pthread_mutex_unlock(&(data->forks[i]));
-	}
+	else if ((philo->times_eaten != data->max_eat)
+		&& (get_time() - philo->time_after_food) > data->t_die)
+		ft_printf_death(data, philo);
 	else
 		data->is_dead = 0;
 	pthread_mutex_unlock(&(philo->after_food));
@@ -73,7 +68,7 @@ static int	philo_death(t_philo *philo)
 	return (data->is_dead);
 }
 
-static int	philo_food(t_philo *philo, t_data *data, int id)
+static int	ft_eating(t_philo *philo, t_data *data, int id)
 {
 	int	second_fork;
 
@@ -88,16 +83,9 @@ static int	philo_food(t_philo *philo, t_data *data, int id)
 	pthread_mutex_lock(&(data->forks[second_fork]));
 	if (philo_death(philo))
 		return (0);
-	ft_printf(data, "took his second fork", get_time() - data->start, philo->id);
-	philo->times_eaten++;
-	if (philo->times_eaten == data->max_eat)
-		data->enough_eaten++;
-	if (data->enough_eaten == data->nb_philo)
-	{
-		pthread_mutex_lock(&(data->death));
-		data->is_dead = 1;
-		pthread_mutex_unlock(&(data->death));
-	}
+	ft_printf(data, "took his second fork", get_time() - data->start, \
+		philo->id);
+	ft_check_eat_enough(data, philo);
 	ft_usleep(data->t_eat);
 	pthread_mutex_lock(&(philo->after_food));
 	philo->time_after_food = get_time();
@@ -109,7 +97,7 @@ static int	philo_food(t_philo *philo, t_data *data, int id)
 	return (1);
 }
 
-static void	*thread_function(void *args)
+static void	*ft_thread(void *args)
 {
 	int			id;
 	t_philo		*philo;
@@ -123,7 +111,7 @@ static void	*thread_function(void *args)
 	philo->times_eaten = 0;
 	while (1)
 	{
-		if (philo_food(philo, data, id) == 0)
+		if (ft_eating(philo, data, id) == 0)
 			break ;
 		if (philo_death(philo))
 			return (0);
@@ -139,7 +127,6 @@ static void	*thread_function(void *args)
 void	ft_philo_maker(t_data *data)
 {
 	int		i;
-	int		is_dead;
 	t_philo	*philo;
 
 	philo = malloc(sizeof(t_philo) * data->nb_philo);
@@ -149,7 +136,7 @@ void	ft_philo_maker(t_data *data)
 	if (!data->thread_id)
 		return ;
 	data->philos = philo;
-	printf(WHITE"[TIME] [ID] [MESSAGE]\n"EOC);
+	printf(WHITE"[TIME]  [ID]\t[MESSAGE]\n\n"EOC);
 	i = -1;
 	while (++i < data->nb_philo)
 	{
@@ -157,22 +144,11 @@ void	ft_philo_maker(t_data *data)
 		philo[i].time_after_food = get_time();
 		philo[i].data = data;
 		philo[i].id = i;
-		pthread_create(&(data->thread_id[i]), NULL, &thread_function, &(philo[i]));
+		pthread_create(&(data->thread_id[i]), NULL, &ft_thread, &(philo[i]));
 	}
-	while (1)
-	{
-		i = -1;
-		while (++i < data->nb_philo)
-		{
-			is_dead = philo_death(&philo[i]);
-			if (is_dead)
-				break ;
-		}
-		if (is_dead)
-			break ;
-	}
+	ft_check_death_status(data, philo);
 	i = -1;
 	while (++i < data->nb_philo)
 		pthread_join(data->thread_id[i], NULL);
-	ft_finish(data);
+	ft_end_mutex(data);
 }

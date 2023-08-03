@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:18:03 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/08/03 16:24:35 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:09:01 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,19 @@ char		*ft_strstr(char *str, char *to_find);
 int			ft_parsing(int argc, char *argv[]);
 void		ft_printf(t_data *data, char *msg, long long int arg1, int arg2);
 
-/* PHILO_FUNCTIONS */
-t_data		*ft_init_philo(int argc, char *argv[]);
-void		ft_philo_maker(t_data *data);
+/* GET_TIME */
 uint64_t	get_time(void);
 int			ft_usleep(suseconds_t time);
-void		ft_finish(t_data *data);
+
+/* PHILO_FUNCTIONS */
+t_data		*ft_init_philo(int argc, char *argv[]);
+int			philo_death(t_philo *philo);
+void		ft_philo_maker(t_data *data);
+
+/* PHILO UTILS */
+void		ft_printf_death(t_data *data, t_philo *philo);
+void		ft_check_eat_enough(t_data *data, t_philo *philo);
+void		ft_check_death_status(t_data *data, t_philo *philo);
+void		ft_end_mutex(t_data *data);
 
 #endif
