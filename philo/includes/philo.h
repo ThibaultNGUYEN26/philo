@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:18:03 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/08/03 19:09:01 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:38:38 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_data
 	struct s_philo	*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
-	pthread_mutex_t	death;
+	pthread_mutex_t is_dead_mut;
 	pthread_t		*thread_id;
 	long long int	start;
 }	t_data;
@@ -52,7 +52,11 @@ typedef struct s_data
 typedef struct s_philo
 {
 	pthread_mutex_t	after_food;
+	pthread_mutex_t	fork_lock_mut;
+	pthread_mutex_t	sec_fork_lock_mut;
 	long long int	time_after_food;
+	int				fork_lock;
+	int				sec_fork_lock;
 	int				times_eaten;
 	int				id;
 	struct s_data	*data;
@@ -79,8 +83,8 @@ int			philo_death(t_philo *philo);
 void		ft_philo_maker(t_data *data);
 
 /* PHILO UTILS */
-void		ft_printf_death(t_data *data, t_philo *philo);
 void		ft_check_eat_enough(t_data *data, t_philo *philo);
+// int			ft_check_death(t_data *data);
 void		ft_check_death_status(t_data *data, t_philo *philo);
 void		ft_end_mutex(t_data *data);
 
