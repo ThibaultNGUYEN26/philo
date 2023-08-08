@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:22:34 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/08/08 16:40:39 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:48:49 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,24 @@ int	philo_death(t_philo *philo)
 	data = philo->data;
 	pthread_mutex_lock(&(philo->after_food));
 	pthread_mutex_lock(&(data->is_dead_mut));
+	pthread_mutex_lock(&(philo->fork_lock_mut));
+	pthread_mutex_lock(&(philo->sec_fork_lock_mut));
 	if (data->is_dead == 1)
 	{
 		is_dead = data->is_dead;
-		if (philo->fork_lock)
+		if (philo->fork_lock && data->nb_philo != 1)
 		{
 			pthread_mutex_unlock(&(data->forks[philo->id]));
-			pthread_mutex_lock(&(philo->fork_lock_mut));
 			philo->fork_lock = 0;
-			pthread_mutex_unlock(&(philo->fork_lock_mut));
 		}
 		if (philo->sec_fork_lock)
 		{
 			if (philo->id == 0)
-				pthread_mutex_unlock(&(data->forks[data->nb_philo]));
+				pthread_mutex_unlock(&(data->forks[data->nb_philo - 1]));
 			else
 				pthread_mutex_unlock(&(data->forks[philo->id - 1]));
-			pthread_mutex_lock(&(philo->sec_fork_lock_mut));
 			philo->sec_fork_lock = 0;
-			pthread_mutex_unlock(&(philo->sec_fork_lock_mut));
 		}
-		pthread_mutex_unlock(&(philo->after_food));
-		pthread_mutex_unlock(&(data->is_dead_mut));
-		return (is_dead);
 	}
 	else if ((philo->times_eaten != data->max_eat)
 		&& (get_time() - philo->time_after_food) > data->t_die)
@@ -79,11 +74,11 @@ int	philo_death(t_philo *philo)
 		data->is_dead = 1;
 		ft_printf(data, "is dead", get_time() - data->start, philo->id);
 	}
-	else
-		data->is_dead = 0;
-	pthread_mutex_unlock(&(philo->after_food));
+	pthread_mutex_unlock(&(philo->sec_fork_lock_mut));
+	pthread_mutex_unlock(&(philo->fork_lock_mut));
 	is_dead = data->is_dead;
 	pthread_mutex_unlock(&(data->is_dead_mut));
+	pthread_mutex_unlock(&(philo->after_food));
 	return (is_dead);
 }
 
@@ -103,6 +98,11 @@ static int	ft_eating(t_philo *philo, t_data *data, int id)
 	if (philo_death(philo))
 		return (0);
 	ft_printf(data, "took his first fork", get_time() - data->start, philo->id);
+	if (data->nb_philo == 1)
+	{
+		pthread_mutex_unlock(&(data->forks[id]));
+		return (0);
+	}
 	pthread_mutex_lock(&(data->forks[second_fork]));
 	pthread_mutex_lock(&(philo->sec_fork_lock_mut));
 	philo->sec_fork_lock = 1;
