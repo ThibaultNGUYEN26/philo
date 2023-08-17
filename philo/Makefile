@@ -6,7 +6,7 @@
 #    By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/24 18:44:37 by thibnguy          #+#    #+#              #
-#    Updated: 2023/08/15 00:38:00 by thibnguy         ###   ########.fr        #
+#    Updated: 2023/08/17 14:56:22 by thibnguy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS		=	libft/ft_atoi.c \
 OBJS		=	$(addprefix ${OBJECTS}/, $(SRCS:.c=.o))
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS		=	-Wall -Wextra -Werror
 CINCLUDES	=	-I ${INCLUDES}
 
 BLACK		=	"\033[1;30m"
