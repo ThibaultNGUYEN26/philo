@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 14:34:47 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/08/17 15:29:03 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/17 15:29:55 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_parsing(int argc, char *argv[])
 	int	i;
 	int	j;
 
-	if (argc == 1 || argc < 5 || argc > 6)
+	if (argc < 5 || argc > 6)
 	{
 		printf(GREEN"[USING] : ./philo [nb_philo] [time_to_die] \
 [time_to_eat] [time_to_sleep] [(nb_of_times_each_philo_must_eat)] \n"EOC);
