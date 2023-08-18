@@ -6,7 +6,7 @@
 /*   By: thibnguy <thibnguy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:22:34 by thibnguy          #+#    #+#             */
-/*   Updated: 2023/08/18 21:09:05 by thibnguy         ###   ########.fr       */
+/*   Updated: 2023/08/18 21:33:22 by thibnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_data	*ft_init_philo(int argc, char *argv[])
 	pthread_mutex_init(&data->is_dead_mut, NULL);
 	pthread_mutex_init(&data->enough_eaten_mut, NULL);
 	data->start = get_time();
-	data->enough_eaten = 0;
 	return (data);
 }
 
@@ -127,6 +126,7 @@ void	ft_philo_maker(t_data *data)
 	t_philo	*philo;
 
 	data->is_dead = 0;
+	data->enough_eaten = 0;
 	philo = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!philo)
 		return ;
